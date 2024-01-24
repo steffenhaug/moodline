@@ -1,0 +1,7 @@
+* Moodline
+A stupid simple package for customizing the Emacs mode line.
+
+** Installation
+As of now, ~moodline~ is under early development, and is not published.
+Installation can be done manually by cloning the repository and adding
+the repository to the Emacs load path.
