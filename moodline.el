@@ -48,7 +48,7 @@
 
 (defconst moodline/vi-cursor
   '(:eval
-    (propertize " %l:%c "
+    (propertize " %l,%c "
                 'face (moodline/fallback-to-inactive 'vi-cursor)))
   "Mode line construct for displaying the position of the point.")
 
