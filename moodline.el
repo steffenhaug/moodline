@@ -104,6 +104,12 @@
     (t mode-name))
   "Right-hand side of custom modeline.")
 
+(defun moodline/minimal ()
+  (setq-local moodline/left
+              '((evil-mode moodline/vi-state)))
+  (setq-local moodline/right
+              '((t mode-name))))
+
 (setq-default mode-line-format 
               '((:eval (moodline/render
                         (format-mode-line moodline/left)
