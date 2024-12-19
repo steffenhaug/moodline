@@ -3,6 +3,9 @@
 (defun moodline/version ()
   (message "0.0.1"))
 
+(defgroup moodline nil
+  "Stupid simple mode line customization.")
+
 
 ;; Active Window Tracking
 
@@ -104,16 +107,42 @@
     (t mode-name))
   "Right-hand side of custom modeline.")
 
-(defun moodline/minimal ()
-  (setq-local moodline/left
-              '((evil-mode moodline/vi-state)))
-  (setq-local moodline/right
-              '((t mode-name))))
+(setq moodline/default-mode-line-format
+      '("%e"
+        mode-line-front-space
+        (:propertize
+         ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
+         display
+         (min-width
+          (5.0)))
+        mode-line-frame-identification
+        mode-line-buffer-identification
+        "   "
+        mode-line-position
+        (vc-mode vc-mode)
+        "  "
+        mode-line-modes
+        mode-line-misc-info
+        mode-line-end-spaces))
 
-(setq-default mode-line-format 
-              '((:eval (moodline/render
-                        (format-mode-line moodline/left)
-                        (format-mode-line moodline/right)))))
+(setq moodline/mode-line-format '((:eval (moodline/render
+                                          (format-mode-line moodline/left)
+                                          (format-mode-line moodline/right)))))
 
+(defun moodline/apply-mode-line-format (fmt)
+  (setq-default mode-line-format fmt)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (setq-local mode-line-format fmt))))
+
+(define-minor-mode moodline-mode
+  "Moodline minor mode."
+  :group  'moodline
+  :global t
+  (cond
+   (moodline-mode
+    (moodline/apply-mode-line-format moodline/mode-line-format))
+   (t
+    (moodline/apply-mode-line-format moodline/default-mode-line-format))))
 
 (provide 'moodline)
